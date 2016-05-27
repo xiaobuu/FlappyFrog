@@ -6,15 +6,20 @@
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <style>
+            html {
+                height: 100%;
+                width: 100%;
+            }
             body {
                 background: #430;
                 margin: 0;
                 padding: 0;
                 text-align: center;
                 overflow: hidden;
+                height: 100%;
             }
             #screen {
-                display: inline-block;
+                height: 100%;
             }
         </style>
     </head>
@@ -26,7 +31,7 @@
             initGame({
                 feedback: '"5"可奉告',
                 feedbackFunc: function() {
-                    window.open('https://github.com/tusenpo/FlappyFrog/issues');
+                    window.open('https://taskbee.cn/');
                 },
                 parent: document.querySelector('#screen')
             });

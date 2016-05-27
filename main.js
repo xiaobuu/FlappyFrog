@@ -10,10 +10,10 @@ var TEXT_TOTAL_TIME_ELAPSED = '累计被续 %s 秒';
 var TEXT_TINY_TIPS = '[微小的提示]\n为了获得坠好的游戏体验，请：\n打开音量\n穿上红色的衣服';
 var TEXT_FONT = '"Segoe UI", "Microsoft YaHei", 宋体, sans-serif'; // 插入宋体
 
-var _gravity = 40,
-  _speed = 390,
+var _gravity = 42, //40,
+  _speed = 500, // 390,
   _flap = 620,
-  _spawnRate = 1 / 1.2,
+  _spawnRate = 1 / 1.6,
   _opening = 260;
 
 var _game;
@@ -130,7 +130,7 @@ function preload() {
   initLoadingText();
   _game.load.onFileComplete.add(showLoadingText);
 
-  _game.load.spritesheet('frog', _baseUrl + 'images/frog.png', 80, 64);
+  _game.load.spritesheet('frog', _baseUrl + 'images/frog.png', 96, 96);
   _game.load.spritesheet('clouds', _baseUrl + 'images/clouds.png', 128, 64);
 
   _game.load.image('pipe', _baseUrl + 'images/pipe.png');
@@ -149,7 +149,7 @@ function preload() {
 }
 
 function o() {
-    return _opening + 60 * ((_score > 50 ? 50 : 50 - _score) / 50);
+    return _opening + 30 * ((_score > 20 ? 20 : 20 - _score) / 20);
 }
 
 function spawnPipe(pipeY, flipped) {
@@ -435,7 +435,7 @@ function initFeedback() {
     return;
   _feedbackText = _game.add.text(
     0,
-    0,
+    _game.world.height - 12,
     _feedback,
     {
       font: '14px ' + TEXT_FONT,
@@ -447,6 +447,7 @@ function initFeedback() {
   );
   if (!_feedbackFunc)
     return;
+  _feedbackText.x = _game.world.width - _feedbackText.width - 12;
   _feedbackSprite = createTextSprite(_feedbackText);
   _feedbackSprite.inputEnabled = true;
   _feedbackSprite.events.onInputDown.add(_feedbackFunc);
@@ -458,7 +459,7 @@ function initTexts() {
   _playBgmText = _game.add.text(
     0,
     0,
-    TEXT_PLAY_BGM,
+    TEXT_PLAY_BGM + '🎵',
     {
       font: '14px ' + TEXT_FONT,
       fill: '#fff',
@@ -467,27 +468,28 @@ function initTexts() {
       align: 'center'
     }
   );
-  _playBgmText.x = _game.world.width - _playBgmText.width;
+  _playBgmText.x = _game.world.width - _playBgmText.width - 12;
+  _playBgmText.y = 12;
   _playBgmSprite = createTextSprite(_playBgmText);
   _playBgmSprite.inputEnabled = true;
   _playBgmSprite.events.onInputDown.add(playBgm);
 
   _scoreText = _game.add.text(
-    _game.world.width / 2,
-    _game.world.height / 4,
+    12,
+    12,
     '',
     {
-      font: '14px ' + TEXT_FONT,
+      font: '48px ' + TEXT_FONT,
       fill: '#fff',
       stroke: '#430',
       strokeThickness: 4,
       align: 'center'
     }
   );
-  _scoreText.anchor.setTo(0.5, 0.5);
+  // _scoreText.anchor.setTo(0.5, 0.5);
 
   _timeElapsedText = _game.add.text(
-    _game.world.width / 2,
+    12,
     _scoreText.y + _scoreText.height,
     '',
     {
@@ -496,11 +498,11 @@ function initTexts() {
       align: 'center'
     }
   );
-  _timeElapsedText.anchor.setTo(0.5, 0.5);
+  // _timeElapsedText.anchor.setTo(0.5, 0.5);
 
   _totalTimeElapsedText = _game.add.text(
     _game.world.width / 2,
-    0,
+    12,
     '',
     {
       font: '14px ' + TEXT_FONT,
@@ -532,7 +534,7 @@ function initTexts() {
     _game.world.height / 2,
     '',
     {
-      font: '18px ' + TEXT_FONT,
+      font: '32px ' + TEXT_FONT,
       fill: '#fff',
       stroke: '#430',
       strokeThickness: 4,
@@ -607,10 +609,10 @@ function create() {
 
   initBackground();
   initPipes();
-  initFrog();
   initGround();
   initTexts();
   initClouds();
+  initFrog();
   initSounds();
   initControls();
 
@@ -704,8 +706,8 @@ function init(options) {
     _feedbackKeyCode = options.feedbackKeyCode;
 
   _game = new Phaser.Game(
-    480,
-    700,
+    window.innerWidth || 480,
+    window.innerHeight || 700,
     Phaser.CANVAS,
     options.parent,
     {
