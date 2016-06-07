@@ -6,6 +6,9 @@
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <style>
+            * {
+                box-sizing: border-box;
+            }
             html {
                 height: 100%;
                 width: 100%;
@@ -17,13 +20,118 @@
                 text-align: center;
                 overflow: hidden;
                 height: 100%;
+                font: 14px/1.435 'Microsoft Yahei', san-serif;
             }
             #screen {
                 height: 100%;
             }
+            #score {
+                background: #fff;
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 24px 14px;
+                display: flex;
+                flex-direction: column;
+                box-shadow:  0 0 2px rgba(0,0,0,4);
+            }
+            #score.active {
+                display: none;
+            }
+            #score img {
+                align-self: center;
+            }
+            #score h1 {
+
+            }
+            .card {
+                flex: 1;
+                background-color: #cf292c;
+                border-radius: 30px;
+                color: #fff;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
+
+            }
+            .totalScore {
+                font-size: 24px;
+                margin: 0 0 12px;
+
+            }
+            #totalScore, #totalCost {
+                display: block;
+                font-size: 1.25em;
+                font-weight: bold;
+            }
+            .totalCost {
+                font-size: 20px;
+                margin: 0;
+            }
+            .startButton {
+                border: 1px solid rgba(0,0,0,.4);
+                height: 64px;
+                border-radius: 32px;
+                padding: 0 32px;
+                background-color: #fff;
+                color: #000;
+                margin: 24px 32px 0;
+                font-size: 21px;
+                font-weight: bold;
+                letter-spacing: 2px;
+                box-shadow: 0 0 3px rgba(0,0,0,.4);
+                outline: none;
+                cursor: pointer;
+            }
+            .startButton:active {
+                background-color: #afafaf;
+            }
+            .noti {
+                position: fixed;
+                top: 12px;
+                background-color: #efefc2;
+                border-radius: 9px;
+                padding: 4px 6px;
+            }
+            .noti .avatar {
+                height: 20px;
+                width: 20px;
+                border-radius: 10px;
+                background-color: #afafaf;
+                margin-right: 3px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .notiName, .notiScore {
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
+        <div id="score">
+            <img src="./images/frog.png"/>
+            <h1>我为长者续命</h1>
+
+            <section class="card">
+                <p class="totalScore">总共被续<span id="totalScore">100秒</span></p>
+                <p class="totalCost">玩家一共献出了<span id="totalCost">100秒</span></p>
+                <button class="startButton" id="go">我来续命</button>
+            </section>
+            <div id="notis">
+
+            </div>
+            <div class="noti">
+                <div class="avatar">
+
+                </div>
+                <span class="notiName">小不</span>
+                <span>刚刚给长者续了</span>
+                <span class="notiScore">200</span>
+                <span>s</span>
+            </div>
+        </div>
         <div id="screen"></div>
         <script src="phaser.min.js"></script>
         <script src="main.js"></script>

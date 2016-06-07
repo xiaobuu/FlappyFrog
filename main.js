@@ -11,10 +11,10 @@ var TEXT_TINY_TIPS = '[微小的提示]\n为了获得坠好的游戏体验，请
 var TEXT_FONT = '"Segoe UI", "Microsoft YaHei", 宋体, sans-serif'; // 插入宋体
 
 var _gravity = 42, //40,
-  _speed = 500, // 390,
+  _speed = 420, // 390,
   _flap = 620,
-  _spawnRate = 1 / 1.6,
-  _opening = 260;
+  _spawnRate = 0.9, //1 / 1.1,
+  _opening = 210; //260;
 
 var _game;
 
@@ -53,8 +53,12 @@ var _scoreText,
   _gameOverText,
   _tryAgainText,
   _tryAgainSprite,
+  _showScoreText,
+  _showScoreSprite,
   _playBgmText,
   _playBgmSprite;
+
+var _inScore = false; // 正在分数界面
 
 var _bgm,
   _playBgm = false;
@@ -366,6 +370,7 @@ function updateFrog() {
   if (_gameOver) {
     _frog.scale.setTo(1, -1);
     _frog.angle = -20;
+
   }
 }
 
@@ -415,11 +420,19 @@ function showGameOver() {
   _gameOverText.renderable = true;
   _tryAgainText.renderable = true;
   _tryAgainSprite.events.onInputDown.addOnce(reset);
+
+  _showScoreText.renderable = true;
+  _showScoreSprite.events.onInputDown.addOnce(function() {
+    scorePage.classList.remove('active');
+    _inScore = false;
+  });
 }
 
 function hideGameOver() {
   _gameOverText.renderable = false;
   _tryAgainText.renderable = false;
+  _showScoreText.renderable = false;
+
 }
 
 function createTextSprite(t) {
@@ -529,6 +542,25 @@ function initTexts() {
   _tryAgainSprite = createTextSprite(_tryAgainText);
   _tryAgainSprite.inputEnabled = true;
 
+
+  _showScoreText = _game.add.text(
+    _game.world.width / 2,
+    _game.world.height - _game.world.height * 2 / 6,
+    '拜访长者',
+    {
+      font: '22px ' + TEXT_FONT,
+      fill: '#fff',
+      stroke: '#430',
+      strokeThickness: 4,
+      align: 'center'
+    }
+  );
+  _showScoreText.anchor.setTo(0.5, 0.5);
+
+  _showScoreSprite = createTextSprite(_showScoreText);
+  _showScoreSprite.inputEnabled = true;
+
+
   _gameOverText = _game.add.text(
     _game.world.width / 2,
     _game.world.height / 2,
@@ -555,6 +587,7 @@ function start() {
 }
 
 function flap() {
+  if (_inScore) return;
   if (!_gameStarted) {
     start();
   }
@@ -663,6 +696,17 @@ function render() {
 }
 
 function init(options) {
+  /*
+
+    绑定dom按键
+
+   */
+  var startButton = document.querySelector('#go');
+  startButton.addEventListener('click', function() {
+    _inScore = false;
+    scorePage.classList.add('active');
+    reset();
+  });
   if (typeof options.debug !== 'undefined')
     _debug = options.debug;
 
@@ -706,8 +750,8 @@ function init(options) {
     _feedbackKeyCode = options.feedbackKeyCode;
 
   _game = new Phaser.Game(
-    window.innerWidth || 480,
-    window.innerHeight || 700,
+    580,
+    Math.max(window.innerHeight / window.innerWidth, 1.2) * 580 || 700,
     Phaser.CANVAS,
     options.parent,
     {
@@ -722,6 +766,21 @@ function init(options) {
 }
 
 initGame = init;
+
+/*
+  提示框
+*/
+  var notis = [];
+  function addNoti () {
+    notis.
+  }
+
+  function buildNoti(name) {
+    throw new Error('还没写');
+  }
 })();
 
 var initGame;
+var scorePage = document.querySelector('#score');
+
+var notis = document.querySelector('#notis');
